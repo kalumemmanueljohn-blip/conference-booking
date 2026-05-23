@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card text-center border-0 shadow-lg">
+            <div class="card-header" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);">
+                <h3 class="mb-0" style="color: #FFD700;">
+                    <i class="bi bi-check-circle-fill"></i> ✅ Réservation enregistrée
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-0">
+                    <i class="bi bi-hourglass-split" style="font-size: 3rem; color: #FFD700;"></i>
+                </div>
+                <h4>Merci {{ r.nom }} !</h4>
+                <p class="text-muted">Votre réservation est en attente de validation.</p>
+                
+                <div class="alert alert-warning">
+                    <strong>📌 Code unique : {{ r.code_unique }}</strong>
+                </div>
+                
+                <div class="alert alert-info">
+                    <strong><i class="bi bi-whatsapp"></i> Contactez-nous sur WhatsApp pour finaliser votre réservation :</strong><br>
+                    <a href="https://wa.me/243859323184?text={{ message_whatsapp|urlencode }}" class="btn btn-success mt-2">
+                        <i class="bi bi-whatsapp"></i> 📱 Contacter sur WhatsApp
+                    </a>
+                </div>
+                
+                <a href="{% url 'home' %}" class="btn btn-outline-warning text-dark mt-2">
+                    <i class="bi bi-house-door text-dark"></i> 🏠 Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

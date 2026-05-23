@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mentions légales - Conference Booking{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header text-center" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);">
+                    <h3 class="mb-0" style="color: #FFD700;">
+                        <i class="bi bi-shield-check me-2"></i> Mentions légales
+                    </h3>
+                    <p class="mt-2 mb-0" style="color: #FFD700; opacity: 0.8;">Informations légales et conformité</p>
+                </div>
+                
+                <div class="card-body p-4">
+                    <!-- Section 1 -->
+                    <div class="mb-4 p-3 rounded-3" style="background-color: #f8f9fa; border-left: 4px solid #FFD700;">
+                        <h4 style="color: #000000;">
+                            <i class="bi bi-building me-2" style="color: #FFD700;"></i> 1. Éditeur du site
+                        </h4>
+                        <p class="mb-0" style="color: #555;">
+                            <strong>Conference ELENGE ZWA MAYELE 1<sup>ère</sup></strong><br>
+                            <i class="bi bi-geo-alt-fill me-1" style="color: #FFD700;"></i> SILIKIN VILLAGE<br>
+                            <i class="bi bi-pin-map-fill me-1" style="color: #FFD700;"></i> Kinshasa, République Démocratique du Congo<br>
+                            <i class="bi bi-envelope-fill me-1" style="color: #FFD700;"></i> Email: kalumemmanueljohn@gmail.com<br>
+                            <i class="bi bi-telephone-fill me-1" style="color: #FFD700;"></i> Téléphone: +243 859 323 184
+                        </p>
+                    </div>
+                    
+                    <!-- Section 2 -->
+                    <div class="mb-4 p-3 rounded-3" style="background-color: #f8f9fa; border-left: 4px solid #FFD700;">
+                        <h4 style="color: #000000;">
+                            <i class="bi bi-person-badge me-2" style="color: #FFD700;"></i> 2. Directeur de publication
+                        </h4>
+                        <p class="mb-0" style="color: #555;">
+                            <i class="bi bi-person-fill me-1" style="color: #FFD700;"></i> Monsieur MPUNZU KISUNGA Daniel<br>
+                            <i class="bi bi-calendar-event me-1" style="color: #FFD700;"></i> Responsable des réservations
+                        </p>
+                    </div>
+                    
+                    <!-- Section 3 -->
+                    <div class="mb-4 p-3 rounded-3" style="background-color: #f8f9fa; border-left: 4px solid #FFD700;">
+                        <h4 style="color: #000000;">
+                            <i class="bi bi-server me-2" style="color: #FFD700;"></i> 3. Hébergement
+                        </h4>
+                        <p class="mb-0" style="color: #555;">
+                            <i class="bi bi-hdd-stack-fill me-1" style="color: #FFD700;"></i> Le site est hébergé par : <strong>PythonAnywhere / Localhost</strong><br>
+                            <i class="bi bi-code-slash me-1" style="color: #FFD700;"></i> Environnement de développement Django
+                        </p>
+                    </div>
+                    
+                    <!-- Section 4 -->
+                    <div class="mb-4 p-3 rounded-3" style="background-color: #f8f9fa; border-left: 4px solid #FFD700;">
+                        <h4 style="color: #000000;">
+                            <i class="bi bi-copyright me-2" style="color: #FFD700;"></i> 4. Propriété intellectuelle
+                        </h4>
+                        <p class="mb-0" style="color: #555;">
+                            L'ensemble des éléments composant ce site (textes, images, logos, etc.) sont 
+                            la propriété exclusive de Conference Booking. Toute reproduction est interdite 
+                            sans autorisation préalable.
+                        </p>
+                    </div>
+                    
+                    <!-- Section 5 -->
+                    <div class="mb-4 p-3 rounded-3" style="background-color: #f8f9fa; border-left: 4px solid #FFD700;">
+                        <h4 style="color: #000000;">
+                            <i class="bi bi-shield-lock-fill me-2" style="color: #FFD700;"></i> 5. Protection des données personnelles
+                        </h4>
+                        <p class="mb-0" style="color: #555;">
+                            <i class="bi bi-check-circle-fill me-1" style="color: #28a745;"></i> Conformément à la réglementation, vous disposez d'un droit d'accès, 
+                            de rectification et de suppression des données vous concernant.<br>
+                            <i class="bi bi-envelope-paper-fill me-1" style="color: #FFD700;"></i> Pour l'exercer, contactez-nous à : 
+                            <a href="mailto:kalumemmanueljohn@gmail.com" style="color: #FFD700;">kalumemmanueljohn@gmail.com</a>
+                        </p>
+                    </div>
+                    
+                    <!-- Section 6 -->
+                    <div class="mb-4 p-3 rounded-3" style="background-color: #f8f9fa; border-left: 4px solid #FFD700;">
+                        <h4 style="color: #000000;">
+                            <i class="bi bi-cookie me-2" style="color: #FFD700;"></i> 6. Cookies
+                        </h4>
+                        <p class="mb-0" style="color: #555;">
+                            Ce site utilise des cookies pour améliorer votre expérience de navigation. 
+                            Vous pouvez les désactiver dans les paramètres de votre navigateur.
+                        </p>
+                    </div>
+                    
+                    <!-- Section 7 -->
+                    <div class="mb-4 p-3 rounded-3" style="background-color: #f8f9fa; border-left: 4px solid #FFD700;">
+                        <h4 style="color: #000000;">
+                            <i class="bi bi-calendar-check-fill me-2" style="color: #FFD700;"></i> 7. Réservations
+                        </h4>
+                        <p class="mb-0" style="color: #555;">
+                            Les réservations effectuées sur ce site sont soumises à nos conditions générales.
+                            Pour toute question, veuillez nous contacter via 
+                            <a href="{% url 'contact' %}" style="color: #FFD700; text-decoration: none;">
+                                <i class="bi bi-chat-dots-fill"></i> notre formulaire de contact
+                            </a>.
+                        </p>
+                    </div>
+                    
+                    <!-- Section 8 -->
+                    <div class="mb-4 p-3 rounded-3" style="background-color: #f8f9fa; border-left: 4px solid #FFD700;">
+                        <h4 style="color: #000000;">
+                            <i class="bi bi-headset me-2" style="color: #FFD700;"></i> 8. Contact
+                        </h4>
+                        <p class="mb-0" style="color: #555;">
+                            Pour toute question relative aux présentes mentions légales, 
+                            veuillez nous contacter via 
+                            <a href="{% url 'contact' %}" style="color: #FFD700; text-decoration: none;">
+                                <i class="bi bi-envelope-fill"></i> notre formulaire de contact
+                            </a>.
+                        </p>
+                    </div>
+                    
+                    <hr style="border-top: 2px solid #FFD700;">
+                    
+                    <!-- Pied de page avec date -->
+                    <div class="text-center">
+                        <p class="text-muted small mb-0">
+                            <i class="bi bi-calendar3 me-1"></i> Dernière mise à jour : 26 Juin 2026
+                        </p>
+                        <p class="text-muted small mt-2">
+                            <i class="bi bi-shield-check"></i> Conforme à la législation en vigueur
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Effet de survol sur les sections */
+    .rounded-3 {
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .rounded-3:hover {
+        transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    /* Style des liens */
+    a {
+        transition: all 0.3s;
+    }
+    
+    a:hover {
+        text-decoration: underline !important;
+        opacity: 0.8;
+    }
+</style>
+{% endblock %}

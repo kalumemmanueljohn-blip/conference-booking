@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center mb-0">📝 Réserver une place</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Nom complet</label>
+                        {{ form.nom }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-whatsapp"></i> Téléphone WhatsApp
+                        </label>
+                        {{ form.telephone }}
+                        <small class="text-muted">Ex: +243 XXX XXX XXX</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nombre de places</label>
+                        {{ form.nombre_places }}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Réserver maintenant</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

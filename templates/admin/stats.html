@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5>Total réservations</h5>
+                    <h2 class="text-primary">{{ total }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5>Réservations payées</h5>
+                    <h2 class="text-success">{{ payes }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5>Revenus totaux</h5>
+                    <h2 class="text-warning">{{ revenus }} USD</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

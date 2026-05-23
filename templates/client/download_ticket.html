@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Télécharger mon ticket - Conference Booking{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header text-center" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);">
+                    <h3 class="mb-0" style="color: #FFD700;">
+                        <i class="bi bi-ticket-perforated-fill"></i> Mon ticket
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Message de succès -->
+                    <div class="text-center mb-4">
+                        <i class="bi bi-check-circle-fill" style="font-size: 4rem; color: #28a745;"></i>
+                        <h2 class="mt-3">Bienvenue !</h2>
+                        <p class="text-muted">Votre ticket est prêt à être téléchargé</p>
+                    </div>
+
+                    <!-- Informations de la réservation -->
+                    <div class="info-card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; padding: 20px; margin: 20px 0; border-left: 5px solid #FFD700;">
+                        <h5 class="mb-3" style="color: #000;">
+                            <i class="bi bi-info-circle-fill" style="color: #FFD700;"></i> Détails de votre réservation
+                        </h5>
+                        <div class="row">
+                            <div class="col-sm-6 mb-2">
+                                <strong><i class="bi bi-person-fill"></i> Nom :</strong>
+                                <p class="mb-0 text-muted">{{ reservation.nom }}</p>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                                <strong><i class="bi bi-envelope-fill"></i> Email :</strong>
+                                <p class="mb-0 text-muted">{{ reservation.email }}</p>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                                <strong><i class="bi bi-qr-code"></i> Code unique :</strong>
+                                <p class="mb-0">
+                                    <span class="badge bg-dark text-warning" style="font-family: monospace; font-size: 1.2rem;">{{ reservation.code_unique }}</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                                <strong><i class="bi bi-people-fill"></i> Nombre de places :</strong>
+                                <p class="mb-0 text-muted">{{ reservation.nombre_places }}</p>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                                <strong><i class="bi bi-cash-stack"></i> Prix total :</strong>
+                                <p class="mb-0 text-muted">{{ reservation.nombre_places|add:"0" }} $ USD</p>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                                <strong><i class="bi bi-calendar-event"></i> Date :</strong>
+                                <p class="mb-0 text-muted">26 Juin 2026, 11H00 - 15H00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statut -->
+                    <div class="text-center mb-4">
+                        {% if reservation.statut == 'paye' %}
+                            <span class="badge bg-success p-2">
+                                <i class="bi bi-check-circle-fill"></i> ✅ Confirmé - Paiement validé
+                            </span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark p-2">
+                                <i class="bi bi-hourglass-split"></i> ⏳ En attente de validation
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Boutons de téléchargement -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <a href="{{ pdf_url }}" class="btn btn-primary w-100 py-3" style="background: #000; border: 2px solid #FFD700; color: #FFD700; font-size: 1.1rem;">
+                                <i class="bi bi-download"></i> 📥 Télécharger mon ticket (PDF)
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="https://wa.me/243859323184" class="btn btn-success w-100 py-3" style="font-size: 1.1rem;">
+                                <i class="bi bi-whatsapp"></i> 📱 Contacter l'organisation
+                            </a>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Informations importantes -->
+                    <div class="alert alert-warning" style="background-color: #fff3cd; border-left: 4px solid #FFD700;">
+                        <strong><i class="bi bi-exclamation-triangle-fill"></i> À SAVOIR :</strong>
+                        <ul class="mt-2 mb-0">
+                            <li>📱 Présentez ce document (papier ou numérique) à l'entrée</li>
+                            <li>⏰ Arrivez 30 minutes avant le début de la conférence</li>
+                            <li>🪪 Munissez-vous d'une pièce d'identité</li>
+                            <li>🔍 Le QR code sur votre ticket permet un accès rapide</li>
+                        </ul>
+                    </div>
+
+                    <!-- Lien de partage WhatsApp -->
+                    <div class="text-center mt-3">
+                        <p class="small text-muted">
+                            <i class="bi bi-share-fill"></i> Partagez ce lien avec vos accompagnateurs :
+                        </p>
+                        <input type="text" class="form-control form-control-sm text-center" id="shareLink" value="{{ request.build_absolute_uri }}" readonly style="font-size: 0.8rem;">
+                        <button class="btn btn-sm btn-outline-secondary mt-2" onclick="copyLink()">
+                            <i class="bi bi-clipboard"></i> Copier le lien
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyLink() {
+    var copyText = document.getElementById("shareLink");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("✅ Lien copié dans le presse-papier !");
+}
+</script>
+
+<style>
+    .info-card {
+        transition: transform 0.3s;
+    }
+    .info-card:hover {
+        transform: translateY(-3px);
+    }
+    .btn-primary:hover {
+        background: #FFD700 !important;
+        color: #000 !important;
+        border-color: #000 !important;
+    }
+    .btn-success:hover {
+        background: #075e54 !important;
+    }
+</style>
+{% endblock %}

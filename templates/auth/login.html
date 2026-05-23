@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Connexion Admin - Conference Booking{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card border-0 shadow-lg">
+            <div class="card-header text-center" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);">
+                <div class="mb-2">
+                    <i class="bi bi-shield-lock-fill" style="font-size: 3rem; color: #FFD700;"></i>
+                </div>
+                <h3 class="mb-0" style="color: #FFD700;">
+                    <i class="bi bi-key-fill me-2"></i> Connexion Admin
+                </h3>
+                <p class="mt-2 mb-0" style="color: #FFD700; opacity: 0.8;">
+                    <i class="bi bi-shield-check"></i> Accès réservé aux administrateurs
+                </p>
+            </div>
+            
+            <div class="card-body p-4">
+                {% if error %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        {{ error }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endif %}
+                
+                <form method="post" autocomplete="off">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-person-fill me-1" style="color: #FFD700;"></i> Nom d'utilisateur
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text" style="background-color: #000000; color: #FFD700; border: none;">
+                                <i class="bi bi-person-badge"></i>
+                            </span>
+                            <input type="text" 
+                                   name="username" 
+                                   id="username"
+                                   class="form-control form-control-lg" 
+                                   autocomplete="off"
+                                   placeholder="Entrez votre nom d'utilisateur"
+                                   style="border: 2px solid #e0e0e0; border-left: none;"
+                                   required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-lock-fill me-1" style="color: #FFD700;"></i> Mot de passe
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text" style="background-color: #000000; color: #FFD700; border: none;">
+                                <i class="bi bi-shield-lock-fill"></i>
+                            </span>
+                            <input type="password" 
+                                   name="password" 
+                                   id="password"
+                                   class="form-control form-control-lg" 
+                                   autocomplete="new-password"
+                                   placeholder="Entrez votre mot de passe"
+                                   style="border: 2px solid #e0e0e0; border-left: none;"
+                                   required>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Se connecter
+                        </button>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle-fill me-1" style="color: #FFD700;"></i>
+                            Cette zone est sécurisée. Seuls les administrateurs autorisés peuvent y accéder.
+                        </small>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card-footer text-center" style="background-color: #f8f9fa; border-top: 2px solid #FFD700;">
+                <small>
+                    <i class="bi bi-building me-1"></i> Conference Booking System
+                    <i class="bi bi-dot"></i>
+                    <i class="bi bi-shield-check"></i> Version 1.0
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Effet de focus sur les champs */
+    .form-control:focus {
+        border-color: #FFD700 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+    }
+    
+    /* Animation du bouton */
+    .btn-primary {
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    /* Animation de la carte */
+    .card {
+        animation: fadeInUp 0.5s ease;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Style des icônes dans les champs */
+    .input-group-text {
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus + .input-group-text {
+        border-color: #FFD700;
+    }
+</style>
+
+<script>
+    // Vider automatiquement les champs au chargement de la page
+    document.addEventListener('DOMContentLoaded', function() {
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        
+        // Vider les champs
+        if (usernameInput) usernameInput.value = '';
+        if (passwordInput) passwordInput.value = '';
+        
+        // Double sécurité
+        setTimeout(function() {
+            if (usernameInput) usernameInput.value = '';
+            if (passwordInput) passwordInput.value = '';
+        }, 100);
+    });
+</script>
+{% endblock %}

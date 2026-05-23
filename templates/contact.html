@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact - Conference ELENGE ZWA MAYELE{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header text-center" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);">
+                    <h3 class="mb-0" style="color: #FFD700;">
+                        <i class="bi bi-envelope-paper-fill me-2"></i> Nous contacter
+                    </h3>
+                    <p class="mt-2 mb-0" style="color: #FFD700; opacity: 0.8;">Une question ? Un problème ? Écrivez-nous !</p>
+                </div>
+                
+                <div class="card-body p-4">
+                    <!-- Section informations de contact -->
+                    <div class="row text-center mb-5">
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3 rounded-3" style="background-color: #f8f9fa; transition: transform 0.3s;">
+                                <div class="mb-2">
+                                    <i class="bi bi-envelope-fill" style="font-size: 2.5rem; color: #FFD700;"></i>
+                                </div>
+                                <h5 style="color: #000000;">Email</h5>
+                                <a href="mailto:kalumemmanueljohn@gmail.com" class="text-decoration-none" style="color: #555;">
+                                    kalumemmanueljohn@gmail.com
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3 rounded-3" style="background-color: #f8f9fa; transition: transform 0.3s;">
+                                <div class="mb-2">
+                                    <i class="bi bi-telephone-fill" style="font-size: 2.5rem; color: #FFD700;"></i>
+                                </div>
+                                <h5 style="color: #000000;">Téléphone</h5>
+                                <a href="tel:+243859323184" class="text-decoration-none" style="color: #555;">
+                                    +243 859 323 184
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3 rounded-3" style="background-color: #f8f9fa; transition: transform 0.3s;">
+                                <div class="mb-2">
+                                    <i class="bi bi-whatsapp" style="font-size: 2.5rem; color: #25D366;"></i>
+                                </div>
+                                <h5 style="color: #000000;">WhatsApp</h5>
+                                <a href="https://wa.me/243859323184" class="text-decoration-none" style="color: #555;">
+                                    +243 859 323 184
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Horaires d'ouverture -->
+                    <div class="row mb-5">
+                        <div class="col-12">
+                            <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #FFD700 0%, #FFC107 100%);">
+                                <i class="bi bi-clock-history me-2" style="font-size: 1.2rem; color: #000;"></i>
+                                <strong style="color: #000;">Horaires d'ouverture :</strong>
+                                <span style="color: #000;">Lundi - Vendredi: 09h00 - 17h00 | Samedi: 10h00 - 14h00</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr style="border-top: 2px solid #FFD700;">
+                    
+                    <!-- Formulaire de contact -->
+                    <h4 class="text-center mb-4" style="color: #000000;">
+                        <i class="bi bi-chat-dots-fill me-2" style="color: #FFD700;"></i> Envoyez-nous un message
+                    </h4>
+                    
+                    <form method="post" action="{% url 'contact' %}">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="bi bi-person-fill me-1" style="color: #FFD700;"></i> Votre nom
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text" style="background-color: #000; color: #FFD700; border: none;">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <input type="text" name="nom" class="form-control" placeholder="Jean Kalume" required style="border: 1px solid #ddd;">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="bi bi-envelope-fill me-1" style="color: #FFD700;"></i> Votre email
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text" style="background-color: #000; color: #FFD700; border: none;">
+                                        <i class="bi bi-envelope"></i>
+                                    </span>
+                                    <input type="email" name="email" class="form-control" placeholder="exemple@email.com" required style="border: 1px solid #ddd;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-tag-fill me-1" style="color: #FFD700;"></i> Sujet
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background-color: #000; color: #FFD700; border: none;">
+                                    <i class="bi bi-chat-text"></i>
+                                </span>
+                                <input type="text" name="sujet" class="form-control" placeholder="Objet de votre message" required style="border: 1px solid #ddd;">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-pencil-fill me-1" style="color: #FFD700;"></i> Message
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background-color: #000; color: #FFD700; border: none; align-items: flex-start;">
+                                    <i class="bi bi-chat-dots"></i>
+                                </span>
+                                <textarea name="message" class="form-control" rows="5" placeholder="Votre message..." required style="border: 1px solid #ddd;"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-lg px-5" style="background-color: #000000; color: #FFD700; border: 2px solid #FFD700; transition: all 0.3s;">
+                                <i class="bi bi-send-fill me-2"></i> Envoyer le message
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Réponse rapide -->
+                    <div class="alert mt-4 text-center" style="background-color: #f8f9fa; border-left: 4px solid #FFD700;">
+                        <i class="bi bi-clock me-2" style="color: #FFD700;"></i>
+                        <strong>Réponse rapide :</strong> Nous vous répondons dans les 24 heures suivant votre message.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Effet de survol sur les cartes */
+    .col-md-4 .p-3 {
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .col-md-4 .p-3:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    /* Style du bouton au survol */
+    .btn-lg:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background-color: #FFD700 !important;
+        color: #000000 !important;
+    }
+    
+    /* Style des champs de formulaire au focus */
+    .form-control:focus {
+        border-color: #FFD700;
+        box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+    }
+</style>
+{% endblock %}

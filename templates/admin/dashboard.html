@@ -1,0 +1,458 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Conference Booking{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-2 px-md-3 px-lg-4">
+    <!-- Statistiques - Responsive -->
+    <div class="row g-2 g-md-3 mb-4">
+        <div class="col-6 col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-2 p-md-3">
+                    <div class="mb-2">
+                        <i class="bi bi-calendar-check-fill" style="font-size: 1.5rem; color: #FFD700;"></i>
+                    </div>
+                    <h5 class="text-muted mb-1 small">Total</h5>
+                    <h2 class="mb-0" style="font-size: 1.5rem;">{{ stats.total }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-6 col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-2 p-md-3">
+                    <div class="mb-2">
+                        <i class="bi bi-hourglass-split" style="font-size: 1.5rem; color: #FFD700;"></i>
+                    </div>
+                    <h5 class="text-muted mb-1 small">En attente</h5>
+                    <h2 class="mb-0" style="font-size: 1.5rem;">{{ stats.en_attente }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-6 col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-2 p-md-3">
+                    <div class="mb-2">
+                        <i class="bi bi-check-circle-fill" style="font-size: 1.5rem; color: #28a745;"></i>
+                    </div>
+                    <h5 class="text-muted mb-1 small">Payées</h5>
+                    <h2 class="mb-0" style="font-size: 1.5rem;">{{ stats.payes }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Barre d'outils responsive -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-2 p-md-3">
+            <div class="row g-2 align-items-center">
+                <div class="col-12 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-dark text-warning border-0">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Rechercher par nom, email ou code...">
+                    </div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                        <button id="filterAll" class="btn btn-sm btn-outline-dark active">
+                            <i class="bi bi-list-ul"></i> <span class="d-none d-sm-inline">Tous</span>
+                        </button>
+                        <button id="filterAttente" class="btn btn-sm btn-outline-warning">
+                            <i class="bi bi-hourglass-split"></i> <span class="d-none d-sm-inline">Attente</span>
+                        </button>
+                        <button id="filterPaye" class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-check-circle"></i> <span class="d-none d-sm-inline">Payés</span>
+                        </button>
+                        <button id="selectAllBtn" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-check-all"></i> <span class="d-none d-sm-inline">Tout cocher</span>
+                        </button>
+                        <button id="deleteSelectedBtn" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash-fill"></i> <span class="d-none d-sm-inline">Supprimer</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tableau responsive avec cases à cocher -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-dark text-warning d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="bi bi-table me-2"></i> Liste des réservations
+            </h5>
+            <span id="selectedCount" class="badge bg-warning text-dark">0 sélectionnée(s)</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <form id="deleteForm" method="post" action="{% url 'supprimer_selection' %}">
+                    {% csrf_token %}
+                    <table class="table table-hover mb-0" id="reservationTable">
+                        <thead class="bg-dark text-warning">
+                            <tr>
+                                <th class="py-2 py-md-3 px-2 px-md-3" style="font-size: 0.85rem; width: 40px;">
+                                    <i class="bi bi-check-square"></i>
+                                </th>
+                                <th class="py-2 py-md-3 px-2 px-md-3" style="font-size: 0.85rem;">
+                                    <i class="bi bi-hash"></i> ID
+                                </th>
+                                <th class="py-2 py-md-3 px-2 px-md-3" style="font-size: 0.85rem;">
+                                    <i class="bi bi-person"></i> Nom
+                                </th>
+                                <th class="py-2 py-md-3 px-2 px-md-3 d-none d-md-table-cell" style="font-size: 0.85rem;">
+                                    <i class="bi bi-envelope"></i> Email
+                                </th>
+                                <th class="py-2 py-md-3 px-2 px-md-3" style="font-size: 0.85rem;">
+                                    <i class="bi bi-ticket"></i> Places
+                                </th>
+                                <th class="py-2 py-md-3 px-2 px-md-3 d-none d-lg-table-cell" style="font-size: 0.85rem;">
+                                    <i class="bi bi-qr-code"></i> Code
+                                </th>
+                                <th class="py-2 py-md-3 px-2 px-md-3" style="font-size: 0.85rem;">
+                                    <i class="bi bi-tag"></i> Statut
+                                </th>
+                                <th class="py-2 py-md-3 px-2 px-md-3" style="font-size: 0.85rem;">
+                                    <i class="bi bi-gear"></i> Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservationBody">
+                            {% for r in page_obj %}
+                            <tr data-statut="{{ r.statut }}" data-nom="{{ r.nom|lower }}" data-email="{{ r.email|lower }}" data-code="{{ r.code_unique|lower }}" data-id="{{ r.id }}">
+                                <td class="py-2 px-2 px-md-3 text-center">
+                                    <input type="checkbox" name="reservation_ids" value="{{ r.id }}" class="reservation-checkbox">
+                                </td>
+                                <td class="py-2 px-2 px-md-3" style="font-size: 0.85rem;">{{ r.id }}</td>
+                                <td class="py-2 px-2 px-md-3" style="font-size: 0.85rem;">
+                                    <strong>{{ r.nom }}</strong>
+                                    <div class="d-md-none small text-muted">{{ r.email|truncatechars:15 }}</div>
+                                </td>
+                                <td class="py-2 px-2 px-md-3 d-none d-md-table-cell" style="font-size: 0.85rem;">{{ r.email }}</td>
+                                <td class="py-2 px-2 px-md-3 text-center" style="font-size: 0.85rem;">
+                                    <span class="badge bg-dark text-warning">
+                                        <i class="bi bi-person"></i> {{ r.nombre_places }}
+                                    </span>
+                                </td>
+                                <td class="py-2 px-2 px-md-3 d-none d-lg-table-cell" style="font-size: 0.85rem;">
+                                    <code>{{ r.code_unique }}</code>
+                                </td>
+                                <td class="py-2 px-2 px-md-3" style="font-size: 0.85rem;">
+                                    {% if r.statut == 'paye' %}
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle-fill"></i> Payé
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="bi bi-hourglass-split"></i> Attente
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="py-2 px-2 px-md-3" style="font-size: 0.85rem;">
+                                    {% if r.statut != 'paye' %}
+                                        <a href="{% url 'valider' r.id %}" class="btn btn-sm btn-success" onclick="return confirm('Valider cette réservation ?')">
+                                            <i class="bi bi-check-lg"></i> <span class="d-none d-md-inline">Valider</span>
+                                        </a>
+                                    {% else %}
+                                        <button class="btn btn-sm btn-secondary" disabled>
+                                            <i class="bi bi-check2-all"></i> <span class="d-none d-md-inline">Validé</span>
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center py-4">
+                                    <i class="bi bi-inbox" style="font-size: 3rem; color: #ccc;"></i>
+                                    <p class="mt-2 text-muted">Aucune réservation trouvée</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pagination responsive -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center flex-wrap">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">
+                                <i class="bi bi-chevron-bar-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                                <i class="bi bi-chevron-bar-right"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Filtrage en temps réel
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let searchTerm = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#reservationBody tr');
+        
+        rows.forEach(row => {
+            let nom = row.getAttribute('data-nom') || '';
+            let email = row.getAttribute('data-email') || '';
+            let code = row.getAttribute('data-code') || '';
+            
+            if (nom.includes(searchTerm) || email.includes(searchTerm) || code.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+    
+    // Filtrage par statut
+    let currentFilter = 'all';
+    
+    document.getElementById('filterAll').addEventListener('click', function() {
+        currentFilter = 'all';
+        filterByStatut('all');
+        updateActiveButton(this);
+    });
+    
+    document.getElementById('filterAttente').addEventListener('click', function() {
+        currentFilter = 'attente';
+        filterByStatut('attente');
+        updateActiveButton(this);
+    });
+    
+    document.getElementById('filterPaye').addEventListener('click', function() {
+        currentFilter = 'paye';
+        filterByStatut('paye');
+        updateActiveButton(this);
+    });
+    
+    function filterByStatut(statut) {
+        let rows = document.querySelectorAll('#reservationBody tr');
+        
+        rows.forEach(row => {
+            let rowStatut = row.getAttribute('data-statut');
+            
+            if (statut === 'all') {
+                row.style.display = '';
+            } else if (statut === 'attente' && rowStatut === 'en_attente') {
+                row.style.display = '';
+            } else if (statut === 'paye' && rowStatut === 'paye') {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+    
+    function updateActiveButton(activeBtn) {
+        let btns = ['filterAll', 'filterAttente', 'filterPaye'];
+        btns.forEach(btnId => {
+            let btn = document.getElementById(btnId);
+            if (btn) {
+                btn.classList.remove('active');
+                btn.classList.remove('btn-dark');
+                btn.classList.add('btn-outline-dark');
+            }
+        });
+        
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('btn-outline-dark');
+        activeBtn.classList.add('btn-dark');
+    }
+    
+    // Initialiser le style des boutons
+    let filterAll = document.getElementById('filterAll');
+    if (filterAll) {
+        filterAll.classList.add('active', 'btn-dark');
+        filterAll.classList.remove('btn-outline-dark');
+    }
+    
+    // Sélection des réservations
+    const checkboxes = document.querySelectorAll('.reservation-checkbox');
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+    const selectedCountSpan = document.getElementById('selectedCount');
+    const deleteForm = document.getElementById('deleteForm');
+    
+    function updateSelectedCount() {
+        const checked = document.querySelectorAll('.reservation-checkbox:checked');
+        selectedCountSpan.textContent = checked.length + ' sélectionnée(s)';
+        
+        if (checked.length > 0) {
+            deleteSelectedBtn.disabled = false;
+        } else {
+            deleteSelectedBtn.disabled = true;
+        }
+    }
+    
+    // Tout cocher / décocher
+    if (selectAllBtn) {
+        selectAllBtn.addEventListener('click', function() {
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => {
+                cb.checked = !allChecked;
+            });
+            updateSelectedCount();
+            
+            if (!allChecked) {
+                selectAllBtn.innerHTML = '<i class="bi bi-check-all"></i> <span class="d-none d-sm-inline">Tout décocher</span>';
+            } else {
+                selectAllBtn.innerHTML = '<i class="bi bi-check-all"></i> <span class="d-none d-sm-inline">Tout cocher</span>';
+            }
+        });
+    }
+    
+    // Écouter les changements de cases
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateSelectedCount);
+    });
+    
+    // Supprimer la sélection
+    if (deleteSelectedBtn) {
+        deleteSelectedBtn.addEventListener('click', function() {
+            const checked = document.querySelectorAll('.reservation-checkbox:checked');
+            if (checked.length === 0) {
+                alert('Veuillez sélectionner au moins une réservation à supprimer.');
+                return;
+            }
+            
+            if (confirm(`⚠️ Êtes-vous sûr de vouloir supprimer ${checked.length} réservation(s) ? Cette action est irréversible.`)) {
+                deleteForm.submit();
+            }
+        });
+    }
+    
+    updateSelectedCount();
+</script>
+
+<style>
+    /* Responsive table */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Style des badges */
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.65rem;
+    }
+    
+    /* Style des boutons de pagination */
+    .page-link {
+        color: #000;
+        border: 1px solid #dee2e6;
+        margin: 0 2px;
+        border-radius: 8px;
+    }
+    
+    .page-link:hover {
+        background-color: #FFD700;
+        border-color: #FFD700;
+        color: #000;
+    }
+    
+    .page-item.active .page-link {
+        background-color: #000;
+        border-color: #FFD700;
+        color: #FFD700;
+    }
+    
+    /* Animation des cartes */
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    /* Style des boutons de filtre */
+    .btn-outline-dark.active {
+        background-color: #000;
+        color: #FFD700;
+        border-color: #FFD700;
+    }
+    
+    /* Checkbox style */
+    .reservation-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+    
+    /* Responsive pour très petits écrans */
+    @media (max-width: 576px) {
+        .btn-sm span {
+            display: none;
+        }
+        
+        .btn-sm i {
+            margin: 0;
+        }
+        
+        .table td, .table th {
+            white-space: nowrap;
+        }
+        
+        .page-link {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+    }
+    
+    /* Tableau responsive avec scroll horizontal sur mobile */
+    @media (max-width: 768px) {
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        .table td, .table th {
+            min-width: 80px;
+        }
+        
+        .table td:first-child, .table th:first-child {
+            min-width: 50px;
+        }
+        
+        .table td:last-child, .table th:last-child {
+            min-width: 100px;
+        }
+    }
+</style>
+{% endblock %}
