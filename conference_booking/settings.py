@@ -1,19 +1,15 @@
 from pathlib import Path
 import os
-import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ====================
 # 🔐 SECURITY WARNING
 # ====================
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-8x9y7z6w5v4u3t2s1r0q9p8o7n6m5l4k3j2i1h0g9f8e7d6c5b4a3')
-DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'  # Changé: False par défaut
-ALLOWED_HOSTS = os.getenv(
-    "DJANGO_ALLOWED_HOSTS",
-    ".onrender.com,localhost,127.0.0.1"
-).split(",")
-SITE_URL = os.getenv('SITE_URL', 'http://127.0.0.1:8000')
+SECRET_KEY = 'django-insecure-8x9y7z6w5v4u3t2s1r0q9p8o7n6m5l4k3j2i1h0g9f8e7d6c5b4a3'
+DEBUG = False
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1', 'bantondos.onrender.com']
+SITE_URL = 'https://bantondos.onrender.com'
 
 # ====================
 # 📦 INSTALLED APPS
@@ -25,16 +21,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',  # 👈 AJOUTÉ
+    'whitenoise.runserver_nostatic',
     'reservations',
 ]
 
 # ====================
-# ⚙️ MIDDLEWARE (WhiteNoise AJOUTÉ)
+# ⚙️ MIDDLEWARE
 # ====================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # 👈 AJOUTÉ (important pour CSS)
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -43,9 +39,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ====================
-# 🗺️ URLS
-# ====================
 ROOT_URLCONF = 'conference_booking.urls'
 
 # ====================
@@ -70,35 +63,24 @@ TEMPLATES = [
     },
 ]
 
-# ====================
-# 🚀 WSGI
-# ====================
 WSGI_APPLICATION = 'conference_booking.wsgi.application'
 
 # ====================
-# 🗄️ DATABASE (avec variable d'environnement)
+# 🗄️ DATABASE (Supabase - Direct)
 # ====================
-DATABASE_URL = os.getenv('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=True
-        )
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres.goivdkqtcqajqxshldds',
+        'PASSWORD': 'Kalumeemmanuel21@',
+        'HOST': 'aws-1-ca-central-1.pooler.supabase.com',
+        'PORT': '6543',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
-else:
-    # Fallback pour développement local
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres',
-            'USER': 'postgres.goivdkqtcqajqxshldds',
-            'PASSWORD': 'Kalumeemmanuel21@',
-            'HOST': 'aws-1-ca-central-1.pooler.supabase.com',
-            'PORT': '6543',
-        }
-    }
+}
 
 # ====================
 # 🔐 PASSWORD VALIDATION
@@ -119,12 +101,12 @@ USE_I18N = True
 USE_TZ = True
 
 # ====================
-# 📁 STATIC FILES (avec WhiteNoise)
+# 📁 STATIC FILES
 # ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # 👈 AJOUTÉ
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ====================
 # 📂 MEDIA FILES
@@ -136,34 +118,34 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # 🔐 LOGIN
 # ====================
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL
+# 📧 EMAIL (Gmail - Configuration directe)
 # ====================
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'kalumemmanueljohn@gmail.com')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'mozo hjiy hsdu wdqw')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kalumemmanueljohn@gmail.com'
+EMAIL_HOST_PASSWORD = 'mozo hjiy hsdu wdqw'
 DEFAULT_FROM_EMAIL = f'Conference Booking <{EMAIL_HOST_USER}>'
 
 # ====================
 # 🔧 CUSTOM SETTINGS
 # ====================
-PRIX_PAR_PLACE = int(os.getenv('PRIX_PAR_PLACE', '7'))
-MAX_PLACES_PAR_RESERVATION = int(os.getenv('MAX_PLACES_PAR_RESERVATION', '10'))
-RESERVATION_EXPIRATION_HOURS = int(os.getenv('RESERVATION_EXPIRATION_HOURS', '24'))
+PRIX_PAR_PLACE = 7
+MAX_PLACES_PAR_RESERVATION = 10
+RESERVATION_EXPIRATION_HOURS = 24
 
 # ====================
 # 📱 TIMELINESAI WHATSAPP API
 # ====================
-TIMELINES_API_URL = os.getenv('TIMELINES_API_URL', 'https://waapi.app/api/v1/instances/ID/client/action/send-message')
-TIMELINES_API_KEY = os.getenv('TIMELINES_API_KEY', 'rFBXhMILLU4naah2bsCT5uAsjeGukQJWe2KzL0Brecb54d2c')
-WHATSAPP_ACCOUNT_PHONE = os.getenv('WHATSAPP_ACCOUNT_PHONE', '243859323184')
-WHATSAPP_API_TYPE = os.getenv('WHATSAPP_API_TYPE', 'timelines')
+TIMELINES_API_URL = 'https://waapi.app/api/v1/instances/ID/client/action/send-message'
+TIMELINES_API_KEY = 'rFBXhMILLU4naah2bsCT5uAsjeGukQJWe2KzL0Brecb54d2c'
+WHATSAPP_ACCOUNT_PHONE = '243859323184'
+WHATSAPP_API_TYPE = 'timelines'
 
 # ====================
 # 🗑️ DEFAULT AUTO FIELD
