@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('reservations.urls')),
     
-    # 👇 AJOUTEZ CES LIGNES POUR L'AUTHENTIFICATION
+    # 🔐 URLs d'authentification
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
