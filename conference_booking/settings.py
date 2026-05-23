@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 🔐 SECURITY WARNING
 # ====================
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-8x9y7z6w5v4u3t2s1r0q9p8o7n6m5l4k3j2i1h0g9f8e7d6c5b4a3')
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'  # Changé: False par défaut
 ALLOWED_HOSTS = os.getenv(
     "DJANGO_ALLOWED_HOSTS",
     ".onrender.com,localhost,127.0.0.1"
@@ -25,14 +25,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',  # 👈 AJOUTÉ
     'reservations',
 ]
 
 # ====================
-# ⚙️ MIDDLEWARE
+# ⚙️ MIDDLEWARE (WhiteNoise AJOUTÉ)
 # ====================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # 👈 AJOUTÉ (important pour CSS)
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -74,18 +76,29 @@ TEMPLATES = [
 WSGI_APPLICATION = 'conference_booking.wsgi.application'
 
 # ====================
-# 🗄️ DATABASE
+# 🗄️ DATABASE (avec variable d'environnement)
 # ====================
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.goivdkqtcqajqxshldds',
-        'PASSWORD': 'Kalumeemmanuel21@',
-        'HOST': 'aws-1-ca-central-1.pooler.supabase.com',
-        'PORT': '6543',
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
-}
+else:
+    # Fallback pour développement local
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres.goivdkqtcqajqxshldds',
+            'PASSWORD': 'Kalumeemmanuel21@',
+            'HOST': 'aws-1-ca-central-1.pooler.supabase.com',
+            'PORT': '6543',
+        }
+    }
 
 # ====================
 # 🔐 PASSWORD VALIDATION
@@ -106,11 +119,12 @@ USE_I18N = True
 USE_TZ = True
 
 # ====================
-# 📁 STATIC FILES
+# 📁 STATIC FILES (avec WhiteNoise)
 # ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # 👈 AJOUTÉ
 
 # ====================
 # 📂 MEDIA FILES
@@ -139,9 +153,9 @@ DEFAULT_FROM_EMAIL = f'Conference Booking <{EMAIL_HOST_USER}>'
 # ====================
 # 🔧 CUSTOM SETTINGS
 # ====================
-PRIX_PAR_PLACE = int(os.getenv('PRIX_PAR_PLACE', 7))
-MAX_PLACES_PAR_RESERVATION = int(os.getenv('MAX_PLACES_PAR_RESERVATION', 10))
-RESERVATION_EXPIRATION_HOURS = int(os.getenv('RESERVATION_EXPIRATION_HOURS', 24))
+PRIX_PAR_PLACE = int(os.getenv('PRIX_PAR_PLACE', '7'))
+MAX_PLACES_PAR_RESERVATION = int(os.getenv('MAX_PLACES_PAR_RESERVATION', '10'))
+RESERVATION_EXPIRATION_HOURS = int(os.getenv('RESERVATION_EXPIRATION_HOURS', '24'))
 
 # ====================
 # 📱 TIMELINESAI WHATSAPP API
@@ -155,3 +169,5 @@ WHATSAPP_API_TYPE = os.getenv('WHATSAPP_API_TYPE', 'timelines')
 # 🗑️ DEFAULT AUTO FIELD
 # ====================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+print("✅ Configuration chargée avec succès !")
