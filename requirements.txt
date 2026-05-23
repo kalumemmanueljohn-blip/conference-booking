@@ -116,8 +116,6 @@ PyMySQL==1.1.2
 pyparsing==3.3.2
 python-dateutil==2.9.0.post0
 python-json-logger==4.0.0
-pywin32-ctypes==0.2.3
-pywinpty==3.0.3
 PyYAML==6.0.3
 pyzmq==27.1.0
 qrcode==8.2
