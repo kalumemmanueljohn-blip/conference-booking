@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ====================
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-8x9y7z6w5v4u3t2s1r0q9p8o7n6m5l4k3j2i1h0g9f8e7d6c5b4a3')
 DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS',".onrender.com", 'localhost,127.0.0.1').split(',')
 SITE_URL = os.getenv('SITE_URL', 'http://127.0.0.1:8000')
 
 # ====================
