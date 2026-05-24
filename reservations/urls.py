@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from reservations.views import test_email
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -15,6 +15,6 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('mentions-legales/', views.mentions, name='mentions'),
     path('mentions/', views.mentions, name='mentions_court'),
-    path('ticket/<str:code_unique>/', views.download_ticket, name='download_ticket'),
-    path('test-email/', views.test_email),
+    path('ticket/<str:code_unique>/', views.download_ticket), 
+    path('test-email/', test_email, name='test_email'),     
 ]
