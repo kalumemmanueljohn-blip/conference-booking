@@ -116,15 +116,16 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (Configuration qui fonctionnait)
+# 📧 EMAIL (Gmail avec mot de passe d'application)
 # ====================
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'kalumemmanueljohn@gmail.com')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'mozo hjiy hsdu wdqw')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = f'Conference Booking <{EMAIL_HOST_USER}>'
+EMAIL_HOST_USER = 'kalumemmanueljohn@gmail.com'
+EMAIL_HOST_PASSWORD = 'gnti fexq eidh nobn'  # 👈 Votre nouveau mot de passe
+DEFAULT_FROM_EMAIL = 'kalumemmanueljohn@gmail.com'
+CONTACT_EMAIL = 'kalumemmanueljohn@gmail.com'
 
 # ====================
 # 🔧 CUSTOM SETTINGS
