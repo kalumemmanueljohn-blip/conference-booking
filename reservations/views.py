@@ -1,5 +1,4 @@
 import os
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -42,7 +41,6 @@ def home(request):
 def waiting(request, id):
     r = get_object_or_404(Reservation, id=id)
     
-    # Message pré-rempli pour WhatsApp
     message_whatsapp = f"""Bonjour ! Je souhaite finaliser ma réservation.
 
 📌 MES INFORMATIONS :
@@ -73,11 +71,9 @@ def download_ticket(request, code_unique):
     
     reservation = get_object_or_404(Reservation, code_unique=code_unique)
     
-    # Vérifier si le fichier PDF existe
     pdf_filename = f"Ticket_{reservation.code_unique}.pdf"
     pdf_path = os.path.join(settings.MEDIA_ROOT, pdf_filename)
     
-    # Si le PDF n'existe pas, le générer
     if not os.path.exists(pdf_path):
         from .utils import envoyer_pdf
         envoyer_pdf(reservation)
@@ -161,7 +157,6 @@ def stats(request):
     en_attente = reservations.filter(statut="en_attente").count()
     revenus = sum(r.nombre_places for r in reservations.filter(statut="paye")) * 7
     
-    # Taux de conversion
     taux_conversion = round((payes / total * 100), 2) if total > 0 else 0
     
     return render(request, 'admin/stats.html', {
@@ -213,13 +208,11 @@ def contact(request):
             messages.error(request, "❌ Tous les champs sont obligatoires")
             return redirect('contact')
         
-        # Validation simple de l'email
         if '@' not in email or '.' not in email:
             messages.error(request, "❌ Veuillez entrer un email valide")
             return redirect('contact')
         
         try:
-            from django.core.mail import send_mail
             email_body = f"""
 
             
@@ -247,8 +240,13 @@ def contact(request):
             messages.error(request, "❌ Erreur lors de l'envoi. Réessayez plus tard.")
         
         return redirect('contact')
+    
+    return render(request, 'contact.html')
 
-    @csrf_exempt
+# ====================
+# TEST EMAIL (Ajoutez À LA FIN du fichier, hors de contact)
+# ====================
+@csrf_exempt
 def test_email(request):
     try:
         send_mail(
@@ -261,8 +259,6 @@ def test_email(request):
         return HttpResponse("✅ Email envoyé avec succès!")
     except Exception as e:
         return HttpResponse(f"❌ Erreur: {e}")
-    
-    return render(request, 'contact.html')
 
 # ====================
 # PAGE MENTIONS LÉGALES
