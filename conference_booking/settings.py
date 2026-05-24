@@ -122,20 +122,15 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (Brevo - avec votre email)
+# 📧 EMAIL
 # ====================
-import os
-
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'kalumemmanueljohn@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'mozo hjiy hsdu wdqw')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-relay.brevo.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('BREVO_USER', '9d2e1e001@smtp-brevo.com')
-EMAIL_HOST_PASSWORD = os.getenv('BREVO_PASSWORD', '')
-DEFAULT_FROM_EMAIL = 'kalumemmanueljohn@gmail.com'
-CONTACT_EMAIL = 'kalumemmanueljohn@gmail.com'
-
-
+DEFAULT_FROM_EMAIL = f'Conference Booking <{EMAIL_HOST_USER}>'
 
 # ====================
 # 🔧 CUSTOM SETTINGS
