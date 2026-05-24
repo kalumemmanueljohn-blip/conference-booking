@@ -11,6 +11,8 @@ from .models import Reservation
 from .utils import envoyer_pdf
 import urllib.parse
 from datetime import datetime
+from django.http import HttpResponse
+from django.core.mail import send_mail
 
 def is_admin(user):
     return user.is_authenticated and (user.is_superuser or user.is_staff)
@@ -246,6 +248,18 @@ def contact(request):
         return redirect('contact')
     
     return render(request, 'contact.html')
+    
+def test_email(request):
+
+    send_mail(
+        'Test Render',
+        'Email fonctionne enfin',
+        'kalumemmanueljohn@gmail.com',
+        ['kalumemmanueljohn@gmail.com'],
+        fail_silently=False,
+    )
+
+    return HttpResponse("Email envoyé")
 
 # ====================
 # PAGE MENTIONS LÉGALES
