@@ -6,10 +6,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ====================
 # 🔐 SECURITY WARNING
 # ====================
-SECRET_KEY = 'django-insecure-8x9y7z6w5v4u3t2s1r0q9p8o7n6m5l4k3j2i1h0g9f8e7d6c5b4a3'
-DEBUG = False
-ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1', 'bantondos.onrender.com']
-SITE_URL = 'https://bantondos.onrender.com'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-8x9y7z6w5v4u3t2s1r0q9p8o7n6m5l4k3j2i1h0g9f8e7d6c5b4a3')
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '.onrender.com,localhost,127.0.0.1,bantondos.onrender.com').split(',')
+SITE_URL = os.getenv('SITE_URL', 'https://bantondos.onrender.com')
 
 # ====================
 # 📦 INSTALLED APPS
@@ -122,16 +122,21 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (Brevo - Configuration finale)
+# 📧 EMAIL (Brevo - Sécurisé avec variables d'environnement)
 # ====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = '9d2e1e001@smtp-brevo.com'
-EMAIL_HOST_PASSWORD = 'bskRS1XHRcShYdq'
+EMAIL_HOST_USER = os.getenv('BREVO_USER', '9d2e1e001@smtp-brevo.com')
+EMAIL_HOST_PASSWORD = os.getenv('BREVO_PASSWORD', '')
 DEFAULT_FROM_EMAIL = 'johnkalumeemmanuel9@gmail.com'
 CONTACT_EMAIL = 'johnkalumeemmanuel9@gmail.com'
+
+# Avertissement si le mot de passe n'est pas défini
+if not EMAIL_HOST_PASSWORD:
+    print("⚠️ ATTENTION: BREVO_PASSWORD non définie sur Render!")
+
 # ====================
 # 🔧 CUSTOM SETTINGS
 # ====================
@@ -140,12 +145,9 @@ MAX_PLACES_PAR_RESERVATION = 10
 RESERVATION_EXPIRATION_HOURS = 24
 
 # ====================
-# 📱 TIMELINESAI WHATSAPP API
+# 📱 TIMELINESAI WHATSAPP API (Désactivé)
 # ====================
-# TIMELINES_API_URL = 'https://waapi.app/api/v1/instances/ID/client/action/send-message'
-# TIMELINES_API_KEY = 'rFBXhMILLU4naah2bsCT5uAsjeGukQJWe2KzL0Brecb54d2c'
-# WHATSAPP_ACCOUNT_PHONE = '243859323184'
-# WHATSAPP_API_TYPE = 'timelines'
+# WhatsApp désactivé - à réactiver avec clé valide si besoin
 
 # ====================
 # 🗑️ DEFAULT AUTO FIELD
