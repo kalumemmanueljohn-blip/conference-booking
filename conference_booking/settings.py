@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import requests
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -119,18 +120,15 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (Gmail)
+# 📧 RESEND
 # ====================
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+RESEND_API_KEY = os.getenv('RESEND_API_KEY')
 
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-CONTACT_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = 'onboarding@resend.dev'
+
+
+
 
 # ====================
 # 🔧 CUSTOM SETTINGS
