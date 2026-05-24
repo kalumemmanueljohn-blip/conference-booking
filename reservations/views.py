@@ -12,7 +12,11 @@ from .utils import envoyer_pdf
 import urllib.parse
 from datetime import datetime
 from django.http import HttpResponse
-from django.core.mail import send_mail
+from django.core.mail import send_mailimport os
+import requests
+
+
+
 
 def is_admin(user):
     return user.is_authenticated and (user.is_superuser or user.is_staff)
@@ -249,18 +253,26 @@ def contact(request):
     
     return render(request, 'contact.html')
     
+
+
+
 def test_email(request):
 
-    send_mail(
-        'Test Render',
-        'Email fonctionne enfin',
-        'kalumemmanueljohn@gmail.com',
-        ['kalumemmanueljohn@gmail.com'],
-        fail_silently=False,
+    response = requests.post(
+        "https://api.resend.com/emails",
+        headers={
+            "Authorization": f"Bearer {os.getenv('RESEND_API_KEY')}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "from": "onboarding@resend.dev",
+            "to": ["kalumemmanueljohn@gmail.com"],
+            "subject": "Test Render",
+            "html": "<h1>Email fonctionne 🚀</h1>",
+        },
     )
 
-    return HttpResponse("Email envoyé")
-
+    return HttpResponse(response.text)
 # ====================
 # PAGE MENTIONS LÉGALES
 # ====================
