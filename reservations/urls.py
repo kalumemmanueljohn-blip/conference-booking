@@ -1,4 +1,5 @@
 from django.urls import path
+from . import views
 from reservations.views import test_email
 
 urlpatterns = [
