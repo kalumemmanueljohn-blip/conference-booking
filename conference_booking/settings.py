@@ -122,20 +122,20 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (Brevo - Sécurisé avec variables d'environnement)
+# 📧 EMAIL (Brevo - avec votre email)
 # ====================
+import os
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('BREVO_USER', '9d2e1e001@smtp-brevo.com')
 EMAIL_HOST_PASSWORD = os.getenv('BREVO_PASSWORD', '')
-DEFAULT_FROM_EMAIL = 'johnkalumeemmanuel9@gmail.com'
-CONTACT_EMAIL = 'johnkalumeemmanuel9@gmail.com'
+DEFAULT_FROM_EMAIL = 'kalumemmanueljohn@gmail.com'
+CONTACT_EMAIL = 'kalumemmanueljohn@gmail.com'
 
-# Avertissement si le mot de passe n'est pas défini
-if not EMAIL_HOST_PASSWORD:
-    print("⚠️ ATTENTION: BREVO_PASSWORD non définie sur Render!")
+
 
 # ====================
 # 🔧 CUSTOM SETTINGS
