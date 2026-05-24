@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from .views import test_email_brevo
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,5 +16,6 @@ urlpatterns = [
     path('mentions-legales/', views.mentions, name='mentions'),
     path('mentions/', views.mentions, name='mentions_court'),
     path('ticket/<str:code_unique>/', views.download_ticket, name='download_ticket'),
-     path('test-email/', test_email_brevo, name='test_email_brevo'),
+    # ❌ SUPPRIMEZ OU COMMENTEZ CETTE LIGNE :
+    # path('test-email/', test_email_brevo, name='test_email_brevo'),
 ]
