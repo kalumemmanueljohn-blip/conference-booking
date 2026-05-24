@@ -122,16 +122,16 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (Gmail - Configuration directe)
+# 📧 EMAIL (Gmail direct)
 # ====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'kalumemmanueljohn@gmail.com'
-EMAIL_HOST_PASSWORD = 'mozo hjiy hsdu wdqw'
-DEFAULT_FROM_EMAIL = f'Conference Booking <{EMAIL_HOST_USER}>'
-
+EMAIL_HOST_USER = 'johnkalumeemmanuel9@gmail.com'
+EMAIL_HOST_PASSWORD = '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' # Sans espaces
+DEFAULT_FROM_EMAIL = 'johnkalumeemmanuel9@gmail.com'
+CONTACT_EMAIL = 'johnkalumeemmanuel9@gmail.com'
 # ====================
 # 🔧 CUSTOM SETTINGS
 # ====================
