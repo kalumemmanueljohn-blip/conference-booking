@@ -122,23 +122,16 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (SendGrid)
+# 📧 EMAIL (Brevo - Configuration finale)
 # ====================
-import os
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_API_KEY', '')
+EMAIL_HOST_USER = '9d2e1e001@smtp-brevo.com'
+EMAIL_HOST_PASSWORD = 'bskRS1XHRcShYdq'
 DEFAULT_FROM_EMAIL = 'johnkalumeemmanuel9@gmail.com'
-
-# Affiche dans les logs si la clé est manquante
-if not EMAIL_HOST_PASSWORD:
-    print("🔴 ATTENTION: SENDGRID_API_KEY n'est pas définie sur Render!")
-else:
-    print(f"🟢 SendGrid configuré avec clé: {EMAIL_HOST_PASSWORD[:10]}...")
+CONTACT_EMAIL = 'johnkalumeemmanuel9@gmail.com'
 # ====================
 # 🔧 CUSTOM SETTINGS
 # ====================
