@@ -11,6 +11,9 @@ from .models import Reservation
 from .utils import envoyer_pdf
 import urllib.parse
 from datetime import datetime
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 def is_admin(user):
     return user.is_authenticated and (user.is_superuser or user.is_staff)
@@ -244,6 +247,20 @@ def contact(request):
             messages.error(request, "❌ Erreur lors de l'envoi. Réessayez plus tard.")
         
         return redirect('contact')
+
+    @csrf_exempt
+def test_email(request):
+    try:
+        send_mail(
+            'Test Email depuis Render',
+            'Ceci est un test de votre configuration email',
+            'johnkalumeemmanuel9@gmail.com',
+            ['johnkalumeemmanuel9@gmail.com'],
+            fail_silently=False,
+        )
+        return HttpResponse("✅ Email envoyé avec succès!")
+    except Exception as e:
+        return HttpResponse(f"❌ Erreur: {e}")
     
     return render(request, 'contact.html')
 
