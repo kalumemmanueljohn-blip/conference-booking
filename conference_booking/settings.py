@@ -7,8 +7,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 🔐 SECURITY WARNING
 # ====================
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-8x9y7z6w5v4u3t2s1r0q9p8o7n6m5l4k3j2i1h0g9f8e7d6c5b4a3')
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com,bantondos.onrender.com').split(',')
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '.onrender.com,localhost,127.0.0.1,bantondos.onrender.com').split(',')
 SITE_URL = os.getenv('SITE_URL', 'https://bantondos.onrender.com')
 
 # ====================
@@ -93,7 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'fr-fr'
 TIME_ZONE = 'Africa/Kinshasa'
 USE_I18N = True
-USE_TZ = True
+USE_TZ = False  # Changé pour éviter les warnings
 
 # ====================
 # 📁 STATIC FILES
@@ -101,7 +101,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ====================
 # 📂 MEDIA FILES
@@ -117,15 +116,17 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (Brevo - Plus rapide)
+# 📧 EMAIL (Gmail - Mot de passe d'application)
 # ====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-relay.brevo.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = '9d2e1e001@smtp-brevo.com'
-EMAIL_HOST_PASSWORD = 'bskRS1XHRcShYdq'
+EMAIL_HOST_USER = 'kalumemmanueljohn@gmail.com'
+EMAIL_HOST_PASSWORD = 'gnti fexq eidh nobn'  # Mot de passe d'application Gmail
 DEFAULT_FROM_EMAIL = 'kalumemmanueljohn@gmail.com'
+CONTACT_EMAIL = 'kalumemmanueljohn@gmail.com'
+
 # ====================
 # 🔧 CUSTOM SETTINGS
 # ====================
@@ -134,12 +135,9 @@ MAX_PLACES_PAR_RESERVATION = int(os.getenv('MAX_PLACES_PAR_RESERVATION', '10'))
 RESERVATION_EXPIRATION_HOURS = int(os.getenv('RESERVATION_EXPIRATION_HOURS', '24'))
 
 # ====================
-# 📱 TIMELINESAI WHATSAPP API (Désactivé temporairement)
+# 📱 WHATSAPP (Désactivé)
 # ====================
-# TIMELINES_API_URL = os.getenv('TIMELINES_API_URL', 'https://waapi.app/api/v1/instances/ID/client/action/send-message')
-# TIMELINES_API_KEY = os.getenv('TIMELINES_API_KEY', '')
-# WHATSAPP_ACCOUNT_PHONE = os.getenv('WHATSAPP_ACCOUNT_PHONE', '243859323184')
-# WHATSAPP_API_TYPE = os.getenv('WHATSAPP_API_TYPE', 'timelines')
+WHATSAPP_ENABLED = False
 
 # ====================
 # 🗑️ DEFAULT AUTO FIELD
