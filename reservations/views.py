@@ -214,12 +214,9 @@ def contact(request):
         
         try:
             email_body = f"""
-
-            
-            
 📧 NOUVEAU MESSAGE DE CONTACT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
-👤 Nom:  {nom}
+👤 Nom: {nom}
 📧 Email: {email}
 📝 Sujet: {sujet}
 
@@ -231,7 +228,7 @@ def contact(request):
                 subject=f"[Conference Booking] Contact - {sujet}",
                 message=email_body,
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.EMAIL_HOST_USER],
+                recipient_list=[settings.CONTACT_EMAIL],
                 fail_silently=False,
             )
             messages.success(request, "✅ Votre message a été envoyé avec succès !")
@@ -244,21 +241,22 @@ def contact(request):
     return render(request, 'contact.html')
 
 # ====================
-# TEST EMAIL (Ajoutez À LA FIN du fichier, hors de contact)
+# TEST EMAIL BREVO
 # ====================
 @csrf_exempt
-def test_email(request):
+def test_email_brevo(request):
+    """Test simple d'envoi d'email via Brevo"""
     try:
         send_mail(
-            'Test Email depuis Render',
-            'Ceci est un test de votre configuration email',
-            'johnkalumeemmanuel9@gmail.com',
-            ['johnkalumeemmanuel9@gmail.com'],
+            subject='Test Brevo - Conference Booking',
+            message='Votre configuration email fonctionne parfaitement !\n\nCeci est un test de confirmation.',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=['johnkalumeemmanuel9@gmail.com'],
             fail_silently=False,
         )
-        return HttpResponse("✅ Email envoyé avec succès!")
+        return HttpResponse("✅ Email de test envoyé avec succès via Brevo!")
     except Exception as e:
-        return HttpResponse(f"❌ Erreur: {e}")
+        return HttpResponse(f"❌ Erreur d'envoi: {str(e)}")
 
 # ====================
 # PAGE MENTIONS LÉGALES
