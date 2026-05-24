@@ -1,4 +1,5 @@
 import os
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -10,9 +11,6 @@ from .models import Reservation
 from .utils import envoyer_pdf
 import urllib.parse
 from datetime import datetime
-from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 
 def is_admin(user):
     return user.is_authenticated and (user.is_superuser or user.is_staff)
@@ -41,6 +39,7 @@ def home(request):
 def waiting(request, id):
     r = get_object_or_404(Reservation, id=id)
     
+    # Message pré-rempli pour WhatsApp
     message_whatsapp = f"""Bonjour ! Je souhaite finaliser ma réservation.
 
 📌 MES INFORMATIONS :
@@ -71,9 +70,11 @@ def download_ticket(request, code_unique):
     
     reservation = get_object_or_404(Reservation, code_unique=code_unique)
     
+    # Vérifier si le fichier PDF existe
     pdf_filename = f"Ticket_{reservation.code_unique}.pdf"
     pdf_path = os.path.join(settings.MEDIA_ROOT, pdf_filename)
     
+    # Si le PDF n'existe pas, le générer
     if not os.path.exists(pdf_path):
         from .utils import envoyer_pdf
         envoyer_pdf(reservation)
@@ -157,6 +158,7 @@ def stats(request):
     en_attente = reservations.filter(statut="en_attente").count()
     revenus = sum(r.nombre_places for r in reservations.filter(statut="paye")) * 7
     
+    # Taux de conversion
     taux_conversion = round((payes / total * 100), 2) if total > 0 else 0
     
     return render(request, 'admin/stats.html', {
@@ -208,15 +210,20 @@ def contact(request):
             messages.error(request, "❌ Tous les champs sont obligatoires")
             return redirect('contact')
         
+        # Validation simple de l'email
         if '@' not in email or '.' not in email:
             messages.error(request, "❌ Veuillez entrer un email valide")
             return redirect('contact')
         
         try:
+            from django.core.mail import send_mail
             email_body = f"""
+
+            
+            
 📧 NOUVEAU MESSAGE DE CONTACT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
-👤 Nom: {nom}
+👤 Nom:  {nom}
 📧 Email: {email}
 📝 Sujet: {sujet}
 
@@ -228,7 +235,7 @@ def contact(request):
                 subject=f"[Conference Booking] Contact - {sujet}",
                 message=email_body,
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.CONTACT_EMAIL],
+                recipient_list=[settings.EMAIL_HOST_USER],
                 fail_silently=False,
             )
             messages.success(request, "✅ Votre message a été envoyé avec succès !")
@@ -239,24 +246,6 @@ def contact(request):
         return redirect('contact')
     
     return render(request, 'contact.html')
-
-# ====================
-# TEST EMAIL BREVO
-# ====================
-@csrf_exempt
-def test_email_brevo(request):
-    """Test simple d'envoi d'email via Brevo"""
-    try:
-        send_mail(
-            subject='Test Brevo - Conference Booking',
-            message='Votre configuration email fonctionne parfaitement !\n\nCeci est un test de confirmation.',
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=['johnkalumeemmanuel9@gmail.com'],
-            fail_silently=False,
-        )
-        return HttpResponse("✅ Email de test envoyé avec succès via Brevo!")
-    except Exception as e:
-        return HttpResponse(f"❌ Erreur d'envoi: {str(e)}")
 
 # ====================
 # PAGE MENTIONS LÉGALES
