@@ -124,13 +124,19 @@ LOGOUT_REDIRECT_URL = '/login/'
 # ====================
 # 📧 EMAIL (SendGrid)
 # ====================
+import os
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_API_KEY', '')
+EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_API_KEY')
 DEFAULT_FROM_EMAIL = 'johnkalumeemmanuel9@gmail.com'
+
+# Si pas de clé, affiche dans les logs
+if not EMAIL_HOST_PASSWORD:
+    print("⚠️ SENDGRID_API_KEY non définie sur Render")
 
 # ====================
 # 🔧 CUSTOM SETTINGS
