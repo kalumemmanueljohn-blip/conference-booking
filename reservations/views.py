@@ -1,4 +1,8 @@
 import os
+import requests
+import urllib.parse
+
+from datetime import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -6,16 +10,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.conf import settings
+from django.http import HttpResponse
+from django.core.mail import send_mail
+
 from .forms import ReservationForm
 from .models import Reservation
 from .utils import envoyer_pdf
-import urllib.parse
-from datetime import datetime
-from django.http import HttpResponse
-from django.core.mail import send_mailimport os
-import requests
-
-
 
 
 def is_admin(user):
