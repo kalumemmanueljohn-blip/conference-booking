@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',  # 👈 AJOUTÉ POUR LE DESIGN
     'reservations',
 ]
 
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
 # ====================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # 👈 AJOUTÉ (important pour le CSS)
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -93,14 +95,15 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'fr-fr'
 TIME_ZONE = 'Africa/Kinshasa'
 USE_I18N = True
-USE_TZ = False  # Changé pour éviter les warnings
+USE_TZ = False
 
 # ====================
-# 📁 STATIC FILES
+# 📁 STATIC FILES (WhiteNoise)
 # ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # 👈 AJOUTÉ
 
 # ====================
 # 📂 MEDIA FILES
@@ -116,14 +119,14 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (Gmail - Mot de passe d'application)
+# 📧 EMAIL (Gmail)
 # ====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kalumemmanueljohn@gmail.com'
-EMAIL_HOST_PASSWORD = 'gnti fexq eidh nobn'  # Mot de passe d'application Gmail
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'gnti fexq eidh nobn')
 DEFAULT_FROM_EMAIL = 'kalumemmanueljohn@gmail.com'
 CONTACT_EMAIL = 'kalumemmanueljohn@gmail.com'
 
