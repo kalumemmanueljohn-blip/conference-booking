@@ -117,17 +117,15 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL (Gmail avec mot de passe d'application)
+# 📧 EMAIL (Brevo - Plus rapide)
 # ====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'kalumemmanueljohn@gmail.com'
-EMAIL_HOST_PASSWORD = 'gnti fexq eidh nobn'  # 👈 Votre nouveau mot de passe
+EMAIL_HOST_USER = '9d2e1e001@smtp-brevo.com'
+EMAIL_HOST_PASSWORD = 'bskRS1XHRcShYdq'
 DEFAULT_FROM_EMAIL = 'kalumemmanueljohn@gmail.com'
-CONTACT_EMAIL = 'kalumemmanueljohn@gmail.com'
-
 # ====================
 # 🔧 CUSTOM SETTINGS
 # ====================
