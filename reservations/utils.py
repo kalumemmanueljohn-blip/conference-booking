@@ -8,6 +8,7 @@ import os
 import qrcode
 import tempfile
 from datetime import datetime
+import threading
 
 # ====================
 # WHATSAPP DÉSACTIVÉ (pour éviter les timeouts)
@@ -15,10 +16,26 @@ from datetime import datetime
 WHATSAPP_ENABLED = False
 
 # ====================
+# ENVOI EMAIL ASYNCHRONE (SANS TIMEOUT)
+# ====================
+def envoyer_email_asynchrone(email):
+    """Envoie l'email dans un thread séparé pour ne pas bloquer le worker"""
+    def send():
+        try:
+            email.send()
+            print(f"✅ Email envoyé avec succès")
+        except Exception as e:
+            print(f"❌ Erreur envoi email: {e}")
+    
+    thread = threading.Thread(target=send)
+    thread.start()
+    return True
+
+# ====================
 # GÉNÉRATION DU PDF ET ENVOI
 # ====================
 def envoyer_pdf(r):
-    """Génère un PDF professionnel et l'envoie par email"""
+    """Génère un PDF professionnel et l'envoie par email (asynchrone)"""
     
     buffer = BytesIO()
     p = canvas.Canvas(buffer, pagesize=A4)
@@ -175,7 +192,7 @@ def envoyer_pdf(r):
     whatsapp_envoye = False
     print("ℹ️ WhatsApp désactivé - seul l'email est envoyé")
     
-    # ========== EMAIL HTML ==========
+    # ========== EMAIL HTML (ENVOI ASYNCHRONE) ==========
     email_html = f"""
 <!DOCTYPE html>
 <html lang="fr">
@@ -276,10 +293,7 @@ def envoyer_pdf(r):
     with open(pdf_path, 'rb') as f:
         email.attach(pdf_filename, f.read(), "application/pdf")
     
-    try:
-        email.send()
-        print(f"✅ Email envoyé à {r.email}")
-    except Exception as e:
-        print(f"❌ Erreur email: {e}")
+    # ENVOI ASYNCHRONE (SANS TIMEOUT)
+    envoyer_email_asynchrone(email)
     
     return whatsapp_envoye
