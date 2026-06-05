@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import requests
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,9 +7,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 🔐 SECURITY WARNING
 # ====================
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-8x9y7z6w5v4u3t2s1r0q9p8o7n6m5l4k3j2i1h0g9f8e7d6c5b4a3')
-DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '.onrender.com,localhost,127.0.0.1,bantondos.onrender.com').split(',')
-SITE_URL = os.getenv('SITE_URL', 'https://bantondos.onrender.com')
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+SITE_URL = os.getenv('SITE_URL', 'http://127.0.0.1:8000')
 
 # ====================
 # 📦 INSTALLED APPS
@@ -22,7 +21,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',  # 👈 AJOUTÉ POUR LE DESIGN
     'reservations',
 ]
 
@@ -31,7 +29,7 @@ INSTALLED_APPS = [
 # ====================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # 👈 AJOUTÉ (important pour le CSS)
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Ajouté pour Railway
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -40,8 +38,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# ====================
+# 🗺️ URLS
+# ====================
 ROOT_URLCONF = 'conference_booking.urls'
 
+# ====================
+# 🧩 TEMPLATES
+# ====================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -61,10 +65,13 @@ TEMPLATES = [
     },
 ]
 
+# ====================
+# 🚀 WSGI
+# ====================
 WSGI_APPLICATION = 'conference_booking.wsgi.application'
 
 # ====================
-# 🗄️ DATABASE (Supabase)
+# 🗄️ DATABASE (Supabase PostgreSQL)
 # ====================
 DATABASES = {
     'default': {
@@ -74,9 +81,6 @@ DATABASES = {
         'PASSWORD': 'Kalumeemmanuel21@',
         'HOST': 'aws-1-ca-central-1.pooler.supabase.com',
         'PORT': '6543',
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
     }
 }
 
@@ -96,15 +100,14 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'fr-fr'
 TIME_ZONE = 'Africa/Kinshasa'
 USE_I18N = True
-USE_TZ = False
+USE_TZ = True
 
 # ====================
-# 📁 STATIC FILES (WhiteNoise)
+# 📁 STATIC FILES
 # ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # 👈 AJOUTÉ
 
 # ====================
 # 📂 MEDIA FILES
@@ -120,38 +123,31 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ====================
-# 📧 EMAIL / RESEND
+# 📧 EMAIL (Gmail avec nouveau mot de passe)
 # ====================
-
-RESEND_API_KEY = os.getenv('RESEND_API_KEY')
-
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'kalumemmanueljohn@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'ltwv bqwn pkeq')  # Nouveau mot de passe
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.resend.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'resend'
-EMAIL_HOST_PASSWORD = RESEND_API_KEY
-
-DEFAULT_FROM_EMAIL = 'onboarding@resend.dev'
-
-
-
+DEFAULT_FROM_EMAIL = f'Conference Booking <{EMAIL_HOST_USER}>'
 
 # ====================
 # 🔧 CUSTOM SETTINGS
 # ====================
-PRIX_PAR_PLACE = int(os.getenv('PRIX_PAR_PLACE', '7'))
-MAX_PLACES_PAR_RESERVATION = int(os.getenv('MAX_PLACES_PAR_RESERVATION', '10'))
-RESERVATION_EXPIRATION_HOURS = int(os.getenv('RESERVATION_EXPIRATION_HOURS', '24'))
+PRIX_PAR_PLACE = int(os.getenv('PRIX_PAR_PLACE', 7))
+MAX_PLACES_PAR_RESERVATION = int(os.getenv('MAX_PLACES_PAR_RESERVATION', 10))
+RESERVATION_EXPIRATION_HOURS = int(os.getenv('RESERVATION_EXPIRATION_HOURS', 24))
 
 # ====================
-# 📱 WHATSAPP (Désactivé)
+# 📱 TIMELINESAI WHATSAPP API
 # ====================
-WHATSAPP_ENABLED = False
+TIMELINES_API_URL = "https://app.timelines.ai/integrations/api/messages"
+TIMELINES_API_KEY = "1a302f5f-38b0-41be-83b3-46ec876f9719"
+WHATSAPP_ACCOUNT_PHONE = "243859323184"
 
 # ====================
 # 🗑️ DEFAULT AUTO FIELD
 # ====================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-print("✅ Configuration chargée avec succès !")
