@@ -170,6 +170,5 @@ def envoyer_whatsapp(telephone, nom, code_unique, nombre_places, site_url, ticke
 
     
 
-    # Nettoyer le numéro
- telephone
+    # Nettoyer le numéro telephone
 
