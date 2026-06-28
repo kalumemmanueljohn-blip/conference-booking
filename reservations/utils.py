@@ -14,9 +14,9 @@ import urllib.parse
 # ====================
 # CONFIGURATION WHATSAPP API
 # ====================
-WHATSAPP_API_URL = "https://waapi.app/api/v1/instances/ID/client/action/send-message"
-WHATSAPP_API_KEY = "rFBXhMILLU4naah2bsCT5uAsjeGukQJWe2KzL0Brecb54d2c"
-WHATSAPP_ACCOUNT_PHONE = "243859323184"  # Mon numéro WhatsApp
+TIMELINES_API_URL = "https://app.timelines.ai/integrations/api/messages"
+TIMELINES_API_KEY = "db5a8918-05b3-42c8-919a-6662a8125b29"
+WHATSAPP_ACCOUNT_PHONE = "243800949634"
 
 def envoyer_whatsapp_api(telephone, message):
     """Envoie un message via l'API WhatsApp"""
