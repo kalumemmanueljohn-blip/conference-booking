@@ -125,8 +125,8 @@ LOGOUT_REDIRECT_URL = '/login/'
 # ====================
 # 📧 EMAIL (Gmail avec nouveau mot de passe)
 # ====================
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'kalumemmanueljohn@gmail.com')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'ltwv bqwn pkeq')  # Nouveau mot de passe
+EMAIL_HOST_USER ='kalumemmanueljohn@gmail.com'
+EMAIL_HOST_PASSWORD ='ltwv bqwn pkeq' # Nouveau mot de passe
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -144,8 +144,8 @@ RESERVATION_EXPIRATION_HOURS = int(os.getenv('RESERVATION_EXPIRATION_HOURS', 24)
 # 📱 TIMELINESAI WHATSAPP API
 # ====================
 TIMELINES_API_URL = "https://app.timelines.ai/integrations/api/messages"
-TIMELINES_API_KEY = "1a302f5f-38b0-41be-83b3-46ec876f9719"
-WHATSAPP_ACCOUNT_PHONE = "243859323184"
+TIMELINES_API_KEY = "db5a8918-05b3-42c8-919a-6662a8125b29"
+WHATSAPP_ACCOUNT_PHONE = "243800949634"
 
 # ====================
 # 🗑️ DEFAULT AUTO FIELD
